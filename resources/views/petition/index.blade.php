@@ -14,8 +14,31 @@
                     <ul class="list-group">
                         @foreach( $petitions as $petition )
                             <li class="list-group-item">
-                                {{ $petition->title }}
-                                <a href="{{ url('/petition/' . $petition->id . '/edit') }}">Edit</a>
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-md-7">
+                                            <div style="margin-top:5px">{{ $petition->title }}</div>
+                                        </div>
+                                        <div class="col-md-1" style="padding-right: 0;">
+                                            <div style="float:right">
+                                            {!! Form::open([
+                                                'method' => 'GET',
+                                                'route' => ['petition.edit', $petition->id]
+                                            ]) !!}
+                                                {!! Form::submit('Edit', ['class' => 'btn btn-info', 'style' => 'padding:5px']) !!}
+                                            {!! Form::close() !!}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-1"> 
+                                            {!! Form::open([
+                                                'method' => 'DELETE',
+                                                'route' => ['petition.destroy', $petition->id]
+                                            ]) !!}
+                                                {!! Form::submit('Delete', ['class' => 'btn btn-danger', 'style' => 'padding:5px']) !!}
+                                            {!! Form::close() !!}
+                                        </div>
+                                    </div>
+                                </div>
                             </li>
                         @endforeach
                     </ul>

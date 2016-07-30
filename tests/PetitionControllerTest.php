@@ -67,6 +67,34 @@ class PetitionControllerTest extends TestCase
     }
 
 
+    /**
+     *
+     */
+    public function testsPetitionDeleteAction()
+    {
+        $user = factory(App\User::class)->create();
+
+        $petition = new Petition;
+        $petition->title = "asdf";
+        $petition->summary = "sdfa";
+        $petition->body = "aaff";
+        $petition->user_id = $user->id;
+        $petition->save();
+
+        $this->actingAs($user)
+             ->visit('/petition')
+             ->see('asdf')
+             ->see('Delete')
+             ->press('Delete')
+             ->seePageIs('/home')
+             ->dontSee('asdf');
+
+        $this->dontSeeInDatabase('petitions', [
+            'title'   => 'asdf'
+        ]);
+    }
+
+
      /**
      * Verify that the title, button, and data for a petition are present
      */

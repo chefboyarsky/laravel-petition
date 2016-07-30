@@ -21,6 +21,9 @@ class PetitionController extends Controller
         $this->middleware('auth');
     }
 
+    /**
+     *
+     */
     public function index()
     {
         $petitions = Petition::where('user_id', Auth::User()->id)->get();
@@ -58,6 +61,10 @@ class PetitionController extends Controller
         return redirect('/home');
     }
 
+
+    /**
+     *
+     */
     public function edit($id)
     {
         $petition = Petition::where('id', $id)->get()->first();
@@ -65,6 +72,10 @@ class PetitionController extends Controller
         return view('petition/edit', ['petition' => $petition]);
     }
 
+
+    /**
+     *
+     */
     public function update($id, Request $request)
     {
         $petition = Petition::findOrFail($id);
@@ -76,6 +87,22 @@ class PetitionController extends Controller
         return redirect('/home');
     }
 
+
+    /**
+     *
+     */
+    public function destroy($id)
+    {
+        $petition = Petition::findOrFail($id);
+        $petition->delete();
+
+        return redirect('/home');
+    }
+
+
+    /**
+     *
+     */
     private function validateRequest(Request $request){
         $this->validate($request, [
             'title'   => 'bail|required|unique:petitions|max:255',
