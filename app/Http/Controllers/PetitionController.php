@@ -6,11 +6,11 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Petition;
-
 use Illuminate\Support\Facades\Auth;
 
 class PetitionController extends Controller
 {
+
     /**
      * Create a new controller instance.
      *
@@ -35,8 +35,10 @@ class PetitionController extends Controller
      */
     public function create()
     {
-        return view('petition/create');
+        $petition = new Petition;
+        return view('petition/create', ['petition' => $petition]);
     }
+
 
     /**
      * Save a petition.
@@ -45,19 +47,40 @@ class PetitionController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validateRequest($request);
+
+        $petition = new Petition;
+        $input = $request->all();
+        $petition->fill($input);
+        $petition->user_id = Auth::User()->id;
+        $petition->save();
+
+        return redirect('/home');
+    }
+
+    public function edit($id)
+    {
+        $petition = Petition::where('id', $id)->get()->first();
+
+        return view('petition/edit', ['petition' => $petition]);
+    }
+
+    public function update($id, Request $request)
+    {
+        $petition = Petition::findOrFail($id);
+        $this->validateRequest($request);
+
+        $input = $request->all();
+        $petition->fill($input)->save();
+
+        return redirect('/home');
+    }
+
+    private function validateRequest(Request $request){
         $this->validate($request, [
             'title'   => 'bail|required|unique:petitions|max:255',
             'summary' => 'required|max:700',
             'body'    => 'required'
         ]);
-
-        $petition = new Petition;
-        $petition->title   = $request->title;
-        $petition->summary = $request->summary;
-        $petition->body    = $request->body;
-        $petition->user_id = Auth::User()->id;
-        $petition->save();
-
-        return redirect('/home');
     }
 }

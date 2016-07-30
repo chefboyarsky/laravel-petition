@@ -13,7 +13,10 @@
                     </button><br/><br/>
                     <ul class="list-group">
                         @foreach( $petitions as $petition )
-                            <li class="list-group-item">{{ $petition->title }}</li>
+                            <li class="list-group-item">
+                                {{ $petition->title }}
+                                <a href="{{ url('/petition/' . $petition->id . '/edit') }}">Edit</a>
+                            </li>
                         @endforeach
                     </ul>
                 </div>
