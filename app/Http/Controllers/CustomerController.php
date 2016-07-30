@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 
+//TODO delete this if i don't make use of it
 class CustomerController extends Controller
 {
     /**

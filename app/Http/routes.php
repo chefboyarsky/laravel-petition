@@ -26,7 +26,7 @@ Route::post('auth/register', 'Auth\AuthController@postRegister');
 
 Route::auth();
 
-Route::get('/home', 'CustomerController@index');
+Route::get('/home', 'PetitionController@index');
 
 Route::resource('petition', 'PetitionController');
 //Route::get('/petition', 'CustomerController@petition');

@@ -39,4 +39,16 @@ class PetitionControllerTest extends TestCase
         ]);
     }
 
+
+    public function testPetitionIndex()
+    {
+        $user = factory(App\User::class)->create();
+
+        $this->actingAs($user)
+             ->visit('/petition')
+             ->see('Dashboard')
+             ->see('Add New');
+
+        //Could add a few petitions and verify list looks correct
+    }
 }
