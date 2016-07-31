@@ -22,12 +22,22 @@ class PetitionController extends Controller
     }
 
     /**
-     *
+     * Lists all the user's partitions, as a control panel
      */
     public function index()
     {
         $petitions = Petition::where('user_id', Auth::User()->id)->get();
         return view('petition/index', ['petitions' => $petitions]);
+    }
+
+
+    /**
+     * Lists all the published petitions, even to users who aren't logged in
+     */
+    public function list()
+    {
+        $petitions = Petition::where('published', 1)->get();
+        return view('petition/list', ['petitions' => $petitions]);
     }
 
 
@@ -100,7 +110,6 @@ class PetitionController extends Controller
 
        return redirect('/home');
     }
-
 
     /**
      *

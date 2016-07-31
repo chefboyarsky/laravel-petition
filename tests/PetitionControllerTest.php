@@ -111,11 +111,34 @@ class PetitionControllerTest extends TestCase
 
         $this->actingAs($user)
              ->visit('/petition')
-             ->see('Dashboard')
+             ->see('My Petitions')
              ->see('addbutton')
              ->see('asdf');
     }
 
+
+    /**
+     * Verify that a list of published petitions is shown on the list page.
+     */
+    public function testPetitionListAction()
+    {
+        $user = factory(App\User::class)->create();
+
+        $petition = new Petition;
+        $petition->title = "asdf";
+        $petition->summary = "sdfa";
+        $petition->body = "aaff";
+        $petition->user_id = $user->id;
+        $petition->save();
+
+        $this->actingAs($user)
+             ->visit('/')
+             ->dontSee('asdf')
+             ->visit('/petition')
+             ->press('publish' . $petition->id)
+             ->visit('/')
+             ->see('asdf');
+    }
 
     /**
      * Verify that the publish action works.
@@ -138,7 +161,7 @@ class PetitionControllerTest extends TestCase
 
         $this->actingAs($user)
              ->visit('/petition')
-             ->see('Dashboard')
+             ->see('My Petitions')
              ->see('publish' . $petition->id)
              ->press('publish' . $petition->id)
              ->seePageIs('/home');
@@ -150,7 +173,7 @@ class PetitionControllerTest extends TestCase
 
        $this->actingAs($user)
              ->visit('/petition')
-             ->see('Dashboard')
+             ->see('My Petitions')
              ->see('publish' . $petition->id)
              ->press('publish' . $petition->id)
              ->seePageIs('/home');
