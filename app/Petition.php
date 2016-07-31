@@ -14,4 +14,9 @@ class Petition extends Model
     {
         return $this->belongsTo('App\User', 'user_id');
     }
+
+    public function mediafiles()
+    {
+        return $this->hasMany('App\Mediafile', 'petition_id');
+    }
 }

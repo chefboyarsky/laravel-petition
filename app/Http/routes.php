@@ -31,5 +31,10 @@ Route::put('/petition/{id}/publish', [
     'as' => 'petition.publish', 'uses' => 'PetitionController@publish'
 ]);
 Route::resource('petition', 'PetitionController');
-//Route::get('/petition', 'CustomerController@petition');
-//Route::post('/petition', 'CustomerController@petition');
+
+Route::get('/petition/{id}/mediafiles', [
+    'as' => 'petition.mediafiles', 'uses' => 'PetitionController@editMediaFiles'
+]);
+Route::post('/petition/{id}/mediafile', [
+    'as' => 'petition.storemediafile', 'uses' => 'PetitionController@storeMediaFile'
+]);

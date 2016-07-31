@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
 use App\Http\Requests;
 use App\Petition;
+use App\Mediafile;
+
 use Illuminate\Support\Facades\Auth;
+use Storage;
+use Illuminate\Http\Request;
 
 class PetitionController extends Controller
 {
@@ -49,7 +51,8 @@ class PetitionController extends Controller
     public function create()
     {
         $petition = new Petition;
-        return view('petition/create', ['petition' => $petition]);
+        $mediafiles = $petition->mediafiles;
+        return view('petition/create', ['petition' => $petition, 'mediafiles' => $mediafiles]);
     }
 
 
@@ -71,6 +74,27 @@ class PetitionController extends Controller
         return redirect('/home');
     }
 
+    /**
+     *
+     */
+    public function storeMediaFile($id, Request $request)
+    {
+        $file = \Illuminate\Support\Facades\Request::file('filefield');
+        $extension = $file->getClientOriginalExtension();
+        $imageName = $id . '_' . $file->getClientOriginalName();
+        \Illuminate\Support\Facades\Request::file('filefield')->move(
+            base_path() . '/public/mediafiles/', $imageName
+        );
+        
+	$entry = new Mediafile();
+	$entry->mime = $file->getClientMimeType();
+	$entry->original_filename = $file->getClientOriginalName();
+	$entry->filename = $id . '_' . $file->getClientOriginalName();
+        $entry->petition_id = $id; 
+	$entry->save();
+        
+        return redirect('/petition/' . $id . '/mediafiles');
+    }
 
     /**
      *
@@ -97,6 +121,11 @@ class PetitionController extends Controller
         return redirect('/home');
     }
 
+    public function editMediaFiles($id)
+    {
+        $petition = Petition::findOrFail($id);
+        return view('mediafile/create', ['id' => $id, 'mediafiles' => $petition->mediafiles ]);
+    }
 
     /**
      * Toggle the 'published' state of this petition.
@@ -117,6 +146,7 @@ class PetitionController extends Controller
     public function destroy($id)
     {
         $petition = Petition::findOrFail($id);
+        //TODO: could clean up unneeded image files as optimization
         $petition->delete();
 
         return redirect('/home');

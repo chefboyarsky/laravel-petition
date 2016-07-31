@@ -15,7 +15,10 @@ class AssociateUsersWithPetitions extends Migration
         Schema::table('petitions', function (Blueprint $table) {
             $table->integer('user_id')->unsigned()->default('0');
 
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')
+                  ->references('id')
+                  ->on('users')
+                  ->onDelete('cascade');
         });
     }
 
