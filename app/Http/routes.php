@@ -22,7 +22,7 @@ Route::post('auth/register', 'Auth\AuthController@postRegister');
 
 Route::auth();
 //TODO this should be some sort of public index
-Route::get('/', 'PetitionController@list');
+Route::get('/', 'SignatoryController@list');
 
 
 //TODO this should be more like a control panel

@@ -32,17 +32,6 @@ class PetitionController extends Controller
         return view('petition/index', ['petitions' => $petitions]);
     }
 
-
-    /**
-     * Lists all the published petitions, even to users who aren't logged in
-     */
-    public function list()
-    {
-        $petitions = Petition::where('published', 1)->get();
-        return view('petition/list', ['petitions' => $petitions]);
-    }
-
-
     /**
      * Create a petition.
      *
@@ -74,6 +63,7 @@ class PetitionController extends Controller
         return redirect('/home');
     }
 
+
     /**
      *
      */
@@ -89,12 +79,13 @@ class PetitionController extends Controller
 	$entry = new Mediafile();
 	$entry->mime = $file->getClientMimeType();
 	$entry->original_filename = $file->getClientOriginalName();
-	$entry->filename = $id . '_' . $file->getClientOriginalName();
+	$entry->filename = $imageName;
         $entry->petition_id = $id; 
 	$entry->save();
         
         return redirect('/petition/' . $id . '/mediafiles');
     }
+
 
     /**
      *
@@ -121,11 +112,16 @@ class PetitionController extends Controller
         return redirect('/home');
     }
 
+
+    /**
+     *
+     */
     public function editMediaFiles($id)
     {
         $petition = Petition::findOrFail($id);
         return view('mediafile/create', ['id' => $id, 'mediafiles' => $petition->mediafiles ]);
     }
+
 
     /**
      * Toggle the 'published' state of this petition.
@@ -139,6 +135,7 @@ class PetitionController extends Controller
 
        return redirect('/home');
     }
+
 
     /**
      *
