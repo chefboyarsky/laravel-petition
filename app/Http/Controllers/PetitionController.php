@@ -153,6 +153,19 @@ class PetitionController extends Controller
     /**
      *
      */
+    public function destroyMediafile($id)
+    {
+        $mediafile = Mediafile::findOrFail($id);
+        $petitionId = $mediafile->petition->id;
+        //TODO: could delete image file if you don't need it around anymore
+        $mediafile->delete();
+
+        return redirect('/petition/' . $petitionId . '/mediafiles');
+    }
+
+    /**
+     *
+     */
     private function validateRequest(Request $request){
         $this->validate($request, [
             'title'   => 'bail|required|max:255',

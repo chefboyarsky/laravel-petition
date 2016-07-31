@@ -32,6 +32,9 @@ Route::put('/petition/{id}/publish', [
 ]);
 Route::resource('petition', 'PetitionController');
 
+Route::delete('/mediafile/{id}', [
+    'as' => 'mediafile.destroy', 'uses' => 'PetitionController@destroyMediafile'
+]);
 Route::get('/petition/{id}/mediafiles', [
     'as' => 'petition.mediafiles', 'uses' => 'PetitionController@editMediaFiles'
 ]);
