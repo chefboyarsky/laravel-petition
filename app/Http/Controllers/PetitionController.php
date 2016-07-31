@@ -89,6 +89,20 @@ class PetitionController extends Controller
 
 
     /**
+     * Toggle the 'published' state of this petition.
+     */
+    public function publish($id)
+    {
+        $petition = Petition::findOrFail($id);
+
+        $petition->published = !$petition->published;
+        $petition->save();
+
+       return redirect('/home');
+    }
+
+
+    /**
      *
      */
     public function destroy($id)
@@ -105,7 +119,7 @@ class PetitionController extends Controller
      */
     private function validateRequest(Request $request){
         $this->validate($request, [
-            'title'   => 'bail|required|unique:petitions|max:255',
+            'title'   => 'bail|required|max:255',
             'summary' => 'required|max:700',
             'body'    => 'required'
         ]);

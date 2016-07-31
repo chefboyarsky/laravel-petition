@@ -32,7 +32,8 @@ class PetitionControllerTest extends TestCase
         $this->seeInDatabase('petitions', [
             'title'   => $givenTitle,
             'summary' => $givenSummary,
-            'body'    => $givenBody
+            'body'    => $givenBody,
+            'published' => false
         ]);
     }
 
@@ -84,8 +85,7 @@ class PetitionControllerTest extends TestCase
         $this->actingAs($user)
              ->visit('/petition')
              ->see('asdf')
-             ->see('Delete')
-             ->press('Delete')
+             ->press('delete' . $petition->id)
              ->seePageIs('/home')
              ->dontSee('asdf');
 
@@ -112,7 +112,52 @@ class PetitionControllerTest extends TestCase
         $this->actingAs($user)
              ->visit('/petition')
              ->see('Dashboard')
-             ->see('Add New')
+             ->see('addbutton')
              ->see('asdf');
+    }
+
+
+    /**
+     * Verify that the publish action works.
+     */
+    public function testPublishAction()
+    {
+        $user = factory(App\User::class)->create();
+
+        $petition = new Petition;
+        $petition->title = "asdf";
+        $petition->summary = "sdfa";
+        $petition->body = "aaff";
+        $petition->user_id = $user->id;
+        $petition->save();
+
+        $this->seeInDatabase('petitions', [
+            'title'   => 'asdf',
+            'published' => false
+        ]); 
+
+        $this->actingAs($user)
+             ->visit('/petition')
+             ->see('Dashboard')
+             ->see('publish' . $petition->id)
+             ->press('publish' . $petition->id)
+             ->seePageIs('/home');
+
+        $this->seeInDatabase('petitions', [
+            'title'   => 'asdf',
+            'published' => true
+        ]);
+
+       $this->actingAs($user)
+             ->visit('/petition')
+             ->see('Dashboard')
+             ->see('publish' . $petition->id)
+             ->press('publish' . $petition->id)
+             ->seePageIs('/home');
+
+       $this->seeInDatabase('petitions', [
+            'title'   => 'asdf',
+            'published' => false
+        ]);
     }   
 }

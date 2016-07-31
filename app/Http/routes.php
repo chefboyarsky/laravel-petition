@@ -27,7 +27,9 @@ Route::post('auth/register', 'Auth\AuthController@postRegister');
 Route::auth();
 
 Route::get('/home', 'PetitionController@index');
-
+Route::put('/petition/{id}/publish', [
+    'as' => 'petition.publish', 'uses' => 'PetitionController@publish'
+]);
 Route::resource('petition', 'PetitionController');
 //Route::get('/petition', 'CustomerController@petition');
 //Route::post('/petition', 'CustomerController@petition');

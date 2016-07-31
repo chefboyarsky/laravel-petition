@@ -1,9 +1,9 @@
 {!! Form::token() !!}
 
-                        <div class="form-group{{ $errors->has('title') ? ' has-error' : '' }}">
-                            <label for="title" class="col-md-4 control-label">Title</label>
+                        <div class="form-group{{ $errors->has('title') ? ' has-error' : '' }}" style="padding-bottom:25px">
+                            <label for="title" class="col-md-2 control-label">Title</label>
 
-                            <div class="col-md-6">
+                            <div class="col-md-7">
                                 <input id="title" type="text" class="form-control" name="title" value="{{ old('title', $petition->title) }}">
 
                                 @if ($errors->has('title'))
@@ -14,10 +14,10 @@
                             </div>
                         </div>
 
-                        <div class="form-group{{ $errors->has('summary') ? ' has-error' : '' }}">
-                            <label for="summary" class="col-md-4 control-label">Summary</label>
+                        <div class="form-group{{ $errors->has('summary') ? ' has-error' : '' }}" style="padding-bottom:45px">
+                            <label for="summary" class="col-md-2 control-label">Summary</label>
 
-                            <div class="col-md-6">
+                            <div class="col-md-7">
                                 <textarea id="summary" class="form-control" name="summary"">{{ old('summary', $petition->summary) }}</textarea>
 
                                 @if ($errors->has('summary'))
@@ -28,10 +28,10 @@
                             </div>
                         </div>
 
-                        <div class="form-group{{ $errors->has('body') ? ' has-error' : '' }}">
-                            <label for="body" class="col-md-4 control-label">Body</label>
+                        <div class="form-group{{ $errors->has('body') ? ' has-error' : '' }}" style="padding-bottom:45px">
+                            <label for="body" class="col-md-2 control-label">Body</label>
 
-                            <div class="col-md-6">
+                            <div class="col-md-7">
                                 <textarea id="body" class="form-control" name="body">{{ old('body', $petition->body) }}</textarea>
 
                                 @if ($errors->has('body'))
@@ -43,9 +43,9 @@
                         </div>
 
                         <div class="form-group">
-                            <div class="col-md-6 col-md-offset-4">
-                                <button type="submit" class="btn btn-primary">
-                                    <i class="fa fa-btn fa-user"></i> Save
+                            <div class="col-md-2 col-md-offset-7" style="text-align:right">
+                                <button type="submit" class="btn btn-success">
+                                    <span class="glyphicon glyphicon-ok" style="margin-right:10px"></span>Save
                                 </button>
                             </div>
                         </div>

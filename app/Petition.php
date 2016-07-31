@@ -8,6 +8,8 @@ class Petition extends Model
 {
     protected $fillable = ['title', 'summary', 'body'];
 
+    protected $guarded = ['published'];
+
     public function user()
     {
         return $this->belongsTo('App\User', 'user_id');
