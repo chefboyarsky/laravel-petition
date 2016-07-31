@@ -19,12 +19,18 @@ class PetitionControllerTest extends TestCase
         $givenTitle   = 'A cool petition title';
         $givenSummary = 'A cool summary';
         $givenBody    = 'A cool body';
+        $thanksMsg    = 'Thanks!';
+        $thanksEmail  = '<b>Thanks!</b>';
+        $thanksSms    = 'U Rok!';
 
         $this->actingAs($user)
              ->visit('/petition/create')
              ->type($givenTitle, 'title')
              ->type($givenSummary, 'summary')
              ->type($givenBody, 'body')
+             ->type($thanksMsg, 'thanks_message')
+             ->type($thanksEmail, 'thanks_email')
+             ->type($thanksSms, 'thanks_sms')
              ->press('Save')
              ->seePageIs('/home')
              ->see($givenTitle);
@@ -33,9 +39,20 @@ class PetitionControllerTest extends TestCase
             'title'   => $givenTitle,
             'summary' => $givenSummary,
             'body'    => $givenBody,
+            'thanks_message' => $thanksMsg,
+            'thanks_email'   => $thanksEmail,
+            'thanks_sms'     => $thanksSms,
             'published' => false
         ]);
     }
+
+
+    /*
+    public function testValidation()
+    {
+
+    }
+    */
 
     /**
      * Verify the edit/update flow works

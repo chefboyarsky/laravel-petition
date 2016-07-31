@@ -130,7 +130,10 @@ class PetitionController extends Controller
         $this->validate($request, [
             'title'   => 'bail|required|max:255',
             'summary' => 'required|max:700',
-            'body'    => 'required'
+            'body'    => 'required',
+            'thanks_message' => 'max:1000',
+            'thanks_email' => 'max:2000',
+            'thanks_sms' => 'max:200'
         ]);
     }
 }

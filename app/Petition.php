@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Petition extends Model
 {
-    protected $fillable = ['title', 'summary', 'body'];
+    protected $fillable = ['title', 'summary', 'body', 'thanks_message', 'thanks_email', 'thanks_sms'];
 
     protected $guarded = ['published'];
 
