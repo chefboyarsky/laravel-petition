@@ -213,7 +213,7 @@ class PetitionControllerTest extends TestCase
              ->press('sign'. $petition_id)
              ->seePageIs('/petition/' . $petition_id . '/sign')
              ->type('Some Person', 'name')
-             ->type('chefboyarsky@gmail.com', 'email')
+             ->type('chefboyarsky+laraveltest@gmail.com', 'email')
              ->type('1112223333', 'phone')
              ->press('Sign')
              ->seePageIs('/petition/' . $petition_id . '/sign')
@@ -229,7 +229,7 @@ class PetitionControllerTest extends TestCase
             ->press('view_signatures' . $petition_id)
             ->seePageIs('/petition/' . $petition_id . '/signatures')
             ->see('Some Person')
-            ->see('chefboyarsky@gmail.com')
+            ->see('chefboyarsky+laraveltest@gmail.com')
             ->see('1112223333');
     }
 }
