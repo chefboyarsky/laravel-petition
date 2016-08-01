@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateMediafilesTable extends Migration
+class CreateSignaturesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,12 +12,12 @@ class CreateMediafilesTable extends Migration
      */
     public function up()
     {
-        Schema::create('mediafiles', function (Blueprint $table) {
+        Schema::create('signatures', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('filename');
-            $table->string('mime');
-            $table->string('original_filename');
             $table->timestamps();
+            $table->string('name');
+            $table->string('email');
+            $table->string('phone', 10);
 
             $table->integer('petition_id')->unsigned()->default('0');
             $table->foreign('petition_id')->references('id')->on('petitions')->onDelete('cascade');
@@ -31,6 +31,6 @@ class CreateMediafilesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('mediafiles');
+        Schema::drop('signatures');
     }
 }

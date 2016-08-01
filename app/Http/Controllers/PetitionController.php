@@ -44,6 +44,8 @@ class PetitionController extends Controller
         return view('petition/create', ['petition' => $petition, 'mediafiles' => $mediafiles]);
     }
 
+    
+
 
     /**
      * Save a petition.
@@ -65,7 +67,9 @@ class PetitionController extends Controller
 
 
     /**
-     *
+     * @param $id
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function storeMediaFile($id, Request $request)
     {
@@ -76,19 +80,20 @@ class PetitionController extends Controller
             base_path() . '/public/mediafiles/', $imageName
         );
         
-	$entry = new Mediafile();
-	$entry->mime = $file->getClientMimeType();
-	$entry->original_filename = $file->getClientOriginalName();
-	$entry->filename = $imageName;
-        $entry->petition_id = $id; 
-	$entry->save();
+        $entry = new Mediafile();
+        $entry->mime = $file->getClientMimeType();
+        $entry->original_filename = $file->getClientOriginalName();
+        $entry->filename = $imageName;
+        $entry->petition_id = $id;
+        $entry->save();
         
         return redirect('/petition/' . $id . '/mediafiles');
     }
-
+    
 
     /**
-     *
+     * @param $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function edit($id)
     {

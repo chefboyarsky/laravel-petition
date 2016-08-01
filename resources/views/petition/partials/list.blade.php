@@ -76,6 +76,22 @@
                                 </button>
                             {!! Form::close() !!}
                         </div>
+                    @else
+                        <div style="float:right">
+                            {!! Form::open([
+                            'method' => 'GET',
+                            'route' => ['signatory.sign', $petition->id],
+                            'class' => 'btn-group'
+                            ]) !!}
+                            <input type="hidden" class="btn"><!-- fake sibling to left -->
+                            <button title="Sign Petition"
+                                    type="submit"
+                                    class="btn btn-success">
+                                <span class="glyphicon glyphicon-pencil" style="margin:-5px"></span>
+                            </button>
+                            <input type="hidden" class="btn"><!-- fake sibling to right -->
+                            {!! Form::close() !!}
+                        </div>
                     @endif
                 </div>
             </div>

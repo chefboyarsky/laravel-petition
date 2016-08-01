@@ -19,4 +19,9 @@ class Petition extends Model
     {
         return $this->hasMany('App\Mediafile', 'petition_id');
     }
+
+    public function signatures()
+    {
+        return $this->hasMany('App\Signature', 'petition_id');
+    }
 }

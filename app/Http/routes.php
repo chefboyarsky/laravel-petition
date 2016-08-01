@@ -22,22 +22,34 @@ Route::post('auth/register', 'Auth\AuthController@postRegister');
 
 Route::auth();
 //TODO this should be some sort of public index
-Route::get('/', 'SignatoryController@list');
+Route::get('/', 'SignatoryController@listPetitions');
 
 
 //TODO this should be more like a control panel
 Route::get('/home', 'PetitionController@index');
+
 Route::put('/petition/{id}/publish', [
     'as' => 'petition.publish', 'uses' => 'PetitionController@publish'
 ]);
+
 Route::resource('petition', 'PetitionController');
 
 Route::delete('/mediafile/{id}', [
     'as' => 'mediafile.destroy', 'uses' => 'PetitionController@destroyMediafile'
 ]);
+
 Route::get('/petition/{id}/mediafiles', [
     'as' => 'petition.mediafiles', 'uses' => 'PetitionController@editMediaFiles'
 ]);
+
 Route::post('/petition/{id}/mediafile', [
     'as' => 'petition.storemediafile', 'uses' => 'PetitionController@storeMediaFile'
+]);
+
+Route::get('/petition/{id}/sign', [
+   'as' => 'signatory.sign', 'uses' => 'SignatoryController@createSignature'
+]);
+
+Route::post('/petition/{id}/sign', [
+    'as' => 'signatory.store', 'uses' => 'SignatoryController@storeSignature'
 ]);
