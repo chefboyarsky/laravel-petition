@@ -12,7 +12,15 @@
                         @if( !$petition->mediafiles->isEmpty() )
                             <hr/>
                             @foreach($petition->mediafiles as $mediafile)
-                                <img src="{{ URL::asset('/') . '/public/mediafiles/' . $mediafile->filename }}" style="max-width:100px; max-height:100px"/>
+                                @if ( $mediafile->mime == 'video/quicktime')
+                                    <video controls="controls" style="max-width:400px" width="100%" height="auto" name="Video Name" src="{{ URL::asset('/') . '/public/mediafiles/' . $mediafile->filename }}"></video>
+                                @endif
+                            @endforeach
+                            <br/>
+                            @foreach($petition->mediafiles as $mediafile)
+                                @if ( $mediafile->mime != 'video/quicktime')
+                                    <img src="{{ URL::asset('/') . '/public/mediafiles/' . $mediafile->filename }}" style="max-width:100px; max-height:100px"/>
+                                @endif
                             @endforeach
                         @endif
                         <hr/>
