@@ -32,6 +32,12 @@ class PetitionController extends Controller
         return view('petition/index', ['petitions' => $petitions]);
     }
 
+    public function signatures($id)
+    {
+        $petition = Petition::findOrFail($id);
+        return view('petition/signatures', ['petition' => $petition]);
+    }
+
     /**
      * Create a petition.
      *

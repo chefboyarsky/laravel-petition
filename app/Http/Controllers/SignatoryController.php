@@ -44,13 +44,18 @@ class SignatoryController extends Controller
             'phone'    => 'required|regex:/[01]?[0-9]{9}/'
         ]);
 
+        $petition = Petition::findOrFail($id);
+
+        if(!$petition->published)
+        {
+            return redirect('/'); //If somehow we got here for an unpublished petition, just return the user to petitions
+        }
+
         $signature = new Signature;
         $input = $request->all();
         $signature->fill($input);
         $signature->petition_id = $id;
         $signature->save();
-
-        $petition = Petition::findOrFail($id);
 
         //TODO: Default thanks message should be in a translation file someplace
         $thanks_message = $petition->thanks_message=='' ? 'Thanks for signing!' : $petition->thanks_message;

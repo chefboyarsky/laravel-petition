@@ -42,6 +42,10 @@ Route::get('/petition/{id}/mediafiles', [
     'as' => 'petition.mediafiles', 'uses' => 'PetitionController@editMediaFiles'
 ]);
 
+Route::get('/petition/{id}/signatures', [
+    'as' => 'petition.signatures', 'uses' => 'PetitionController@signatures'
+]);
+
 Route::post('/petition/{id}/mediafile', [
     'as' => 'petition.storemediafile', 'uses' => 'PetitionController@storeMediaFile'
 ]);

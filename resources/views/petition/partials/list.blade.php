@@ -39,13 +39,27 @@
 
                             {!! Form::open([
                                 'method' => 'GET',
+                                'route' => ['petition.signatures', $petition->id],
+                                'class' => 'btn-group'
+                            ]) !!}
+                            <input type="hidden" class="btn"><!-- fake sibling to left -->
+                            <button title="View Signatures"
+                                    type="submit"
+                                    class="btn btn-info">
+                                <span class="glyphicon glyphicon-ok" style="margin:-5px"></span>
+                            </button>
+                            <input type="hidden" class="btn"><!-- fake sibling to right -->
+                            {!! Form::close() !!}
+
+                            {!! Form::open([
+                                'method' => 'GET',
                                 'route' => ['petition.mediafiles', $petition->id],
                                 'class' => 'btn-group'
                             ]) !!}
                                 <input type="hidden" class="btn"><!-- fake sibling to left -->
                                 <button title="Upload Media"
                                         type="submit"
-                                        class="btn btn-info">
+                                        class="btn btn-success">
                                     <span class="glyphicon glyphicon-file" style="margin:-5px"></span>
                                 </button>
                                 <input type="hidden" class="btn"><!-- fake sibling to right -->
@@ -59,7 +73,7 @@
                                 <input type="hidden" class="btn"><!-- fake sibling to left -->
                                 <button title="Edit Petition"
                                         type="submit"
-                                        class="btn btn-info">
+                                        class="btn btn-success">
                                     <span class="glyphicon glyphicon-pencil" style="margin:-5px"></span>
                                 </button>
                                 <input type="hidden" class="btn"><!-- fake sibling to right -->
