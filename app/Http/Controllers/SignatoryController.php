@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Petition;
 use App\Signature;
+use Mail;
 
 class SignatoryController extends Controller
 {
@@ -59,6 +60,12 @@ class SignatoryController extends Controller
 
         //TODO: Default thanks message should be in a translation file someplace
         $thanks_message = $petition->thanks_message=='' ? 'Thanks for signing!' : $petition->thanks_message;
+
+        Mail::send('email.thanks', ['signature' => $signature, 'petition' => $petition], function ($m) use ($signature) {
+            $m->from('noreply@effect.com', 'Effect');
+
+            $m->to($signature->email, $signature->name)->subject('Thanks for Signing');
+        });
 
         return view('signatory/thanks', ['thanks_message' => $thanks_message]);
     }

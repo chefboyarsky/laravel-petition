@@ -1,0 +1,1 @@
+{{ $petition->thanks_email=='' ? 'The dedicated efforts of people like you on ' . $petition->title . ' will make all the difference. Thank you!' : $petition->thanks_email }}
