@@ -9,6 +9,8 @@ use App\Petition;
 class PetitionControllerTest extends TestCase
 {
 
+    //TODO: make use of factory for Petition
+    
     /**
      * Verify the create/save flow works
      */
@@ -47,13 +49,6 @@ class PetitionControllerTest extends TestCase
     }
 
 
-    /*
-    public function testValidation()
-    {
-
-    }
-    */
-
     /**
      * Verify the edit/update flow works
      */ 
@@ -61,12 +56,7 @@ class PetitionControllerTest extends TestCase
     {
         $user = factory(App\User::class)->create();
 
-        $petition = new Petition;
-        $petition->title = "asdf";
-        $petition->summary = "sdfa";
-        $petition->body = "aaff";
-        $petition->user_id = $user->id;
-        $petition->save();
+        $petition = $this->createAPetition($user->id);
 
         $this->actingAs($user)
              ->visit('/petition/1/edit') //verify correct values for fields on edit page
@@ -92,12 +82,7 @@ class PetitionControllerTest extends TestCase
     {
         $user = factory(App\User::class)->create();
 
-        $petition = new Petition;
-        $petition->title = "asdf";
-        $petition->summary = "sdfa";
-        $petition->body = "aaff";
-        $petition->user_id = $user->id;
-        $petition->save();
+        $petition = $this->createAPetition($user->id);
 
         $this->actingAs($user)
              ->visit('/petition')
@@ -119,12 +104,7 @@ class PetitionControllerTest extends TestCase
     {
         $user = factory(App\User::class)->create();
 
-        $petition = new Petition;
-        $petition->title = "asdf";
-        $petition->summary = "sdfa";
-        $petition->body = "aaff";
-        $petition->user_id = $user->id;
-        $petition->save();
+        $petition = $this->createAPetition($user->id);
 
         $this->actingAs($user)
              ->visit('/petition')
@@ -141,18 +121,15 @@ class PetitionControllerTest extends TestCase
     {
         $user = factory(App\User::class)->create();
 
-        $petition = new Petition;
-        $petition->title = "asdf";
-        $petition->summary = "sdfa";
-        $petition->body = "aaff";
-        $petition->user_id = $user->id;
-        $petition->save();
+        $petition = $this->createAPetition($user->id);
 
         $this->actingAs($user)
              ->visit('/')
-             ->dontSee('asdf')
-             ->visit('/petition')
-             ->press('publish' . $petition->id)
+             ->dontSee('asdf');
+
+        $this->publishPetition($user, $petition->id);
+
+        $this->actingAs($user)
              ->visit('/')
              ->see('asdf');
     }
@@ -164,40 +141,95 @@ class PetitionControllerTest extends TestCase
     {
         $user = factory(App\User::class)->create();
 
-        $petition = new Petition;
-        $petition->title = "asdf";
-        $petition->summary = "sdfa";
-        $petition->body = "aaff";
-        $petition->user_id = $user->id;
-        $petition->save();
+        $petition = $this->createAPetition($user->id);
 
         $this->seeInDatabase('petitions', [
             'title'   => 'asdf',
             'published' => false
-        ]); 
+        ]);
 
-        $this->actingAs($user)
-             ->visit('/petition')
-             ->see('My Petitions')
-             ->see('publish' . $petition->id)
-             ->press('publish' . $petition->id)
-             ->seePageIs('/home');
+        $this->publishPetition($user, $petition->id);
 
         $this->seeInDatabase('petitions', [
             'title'   => 'asdf',
             'published' => true
         ]);
 
-       $this->actingAs($user)
-             ->visit('/petition')
-             ->see('My Petitions')
-             ->see('publish' . $petition->id)
-             ->press('publish' . $petition->id)
-             ->seePageIs('/home');
+        $this->publishPetition($user, $petition->id);
 
        $this->seeInDatabase('petitions', [
             'title'   => 'asdf',
             'published' => false
         ]);
-    }   
+    }
+
+    public function testSigningPetition()
+    {
+        $user = factory(App\User::class)->create();
+
+        $petition = $this->createAPetition($user->id);
+        $this->publishPetition($user, $petition->id);
+        $this->signPetition($petition->id);
+        $this->verifyPetitionSigned($user, $petition->id);
+    }
+
+    //TODO test image upload
+
+    //TODO test image delete
+
+    //TODO test video upload/delete
+
+    //TODO test form validation
+
+    private function createAPetition($user_id)
+    {
+        $petition = new Petition;
+        $petition->title = "asdf";
+        $petition->summary = "sdfa";
+        $petition->body = "aaff";
+        $petition->user_id = $user_id;
+        $petition->save();
+
+        return $petition;
+    }
+
+    private function publishPetition($user, $petition_id)
+    {
+        $this->actingAs($user)
+            ->visit('/petition')
+            ->see('My Petitions')
+            ->see('publish' . $petition_id)
+            ->press('publish' . $petition_id)
+            ->seePageIs('/home');
+    }
+
+    private function signPetition($petition_id)
+    {
+        $this->visit('/')     //not acting as signed-in user
+             ->see('asdf')
+             ->click('asdf')
+             ->see('sdfa')
+             ->see('sign'. $petition_id)
+             ->press('sign'. $petition_id)
+             ->seePageIs('/petition/' . $petition_id . '/sign')
+             ->type('Some Person', 'name')
+             ->type('chefboyarsky@gmail.com', 'email')
+             ->type('1112223333', 'phone')
+             ->press('Sign')
+             ->seePageIs('/petition/' . $petition_id . '/sign')
+             ->see('Signature Added');
+    }
+
+    private function verifyPetitionSigned($user, $petition_id)
+    {
+        $this->actingAs($user)
+            ->visit('/petition')
+            ->see('My Petitions')
+            ->see('view_signatures' . $petition_id)
+            ->press('view_signatures' . $petition_id)
+            ->seePageIs('/petition/' . $petition_id . '/signatures')
+            ->see('Some Person')
+            ->see('chefboyarsky@gmail.com')
+            ->see('1112223333');
+    }
 }

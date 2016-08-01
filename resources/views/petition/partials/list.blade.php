@@ -52,6 +52,7 @@
                             ]) !!}
                             <input type="hidden" class="btn"><!-- fake sibling to left -->
                             <button title="View Signatures"
+                                    id="view_signatures{{ $petition->id }}"
                                     type="submit"
                                     class="btn btn-info">
                                 <span class="glyphicon glyphicon-ok" style="margin:-5px"></span>
@@ -106,7 +107,7 @@
                             'class' => 'btn-group'
                             ]) !!}
                             <input type="hidden" class="btn"><!-- fake sibling to left -->
-                            <button title="Sign Petition"
+                            <button id="sign{{ $petition->id }}" title="Sign Petition"
                                     type="submit"
                                     class="btn btn-success">
                                 <span class="glyphicon glyphicon-pencil" style="margin:-5px"></span>
