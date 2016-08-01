@@ -29,7 +29,7 @@ class SignatoryController extends Controller
     {
         $petition = Petition::findOrFail($id);
         $signature = new Signature;
-        return view('signatory/create', ['signature' => $signature, 'petition' => $petition]);
+        return view('signatory/sign', ['signature' => $signature, 'petition' => $petition]);
     }
 
 
